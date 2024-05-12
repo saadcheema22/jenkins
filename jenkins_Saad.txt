@@ -66,6 +66,12 @@ pipeline {
                 echo 'Example: AWS CodeDeploy to production'
             }
         }
+         stage('Complete') {
+            steps {
+                echo 'Pipeline run completed.'
+               
+            }
+        }
        
     }
     
