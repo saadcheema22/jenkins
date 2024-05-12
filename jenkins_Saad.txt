@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the code using Maven...'
+                echo 'Example: mvn clean package'
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit tests with JUnit...'
+                echo 'Running integration tests with Selenium...'
+            }
+            post {
+             success {
+                mail to:"s.ikramcheema@gmail.com",
+                subject: "Pipeline Success Notification",
+                body: "Pipeline Succeeded. the logs are also attached "
+        }
+             failure {
+                mail to:"s.ikramcheema@gmail.com",
+                subject: "Pipeline Success Notification",
+                body: "Pipeline failed. Please investigate."
+        }
+        }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo 'Performing code analysis using SonarQube...'
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan using OWASP ZAP or SonarQube...'
+            }
+           post {
+             success {
+                mail to:"s.ikramcheema@gmail.com",
+                subject: "Pipeline Notification",
+                body: "Pipeline Succeeded."
+        }
+             failure {
+                mail to:"s.ikramcheema@gmail.com",
+                subject: "Pipeline Notification",
+                body: "Pipeline failed. Please investigate."
+        }
+        }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying the application to staging environment...'
+                echo 'Example: AWS CodeDeploy to staging'
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging environment...'
+                echo 'Example: curl http://staging-app-url'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying the application to production environment...'
+                echo 'Example: AWS CodeDeploy to production'
+            }
+        }
+       
+    }
+    
+    
+}
